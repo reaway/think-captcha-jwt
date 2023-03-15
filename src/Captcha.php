@@ -2,17 +2,11 @@
 namespace Think\Component\CaptchaJwt;
 
 use Exception;
-use think\Config;
 
 class Captcha
 {
     private $im = null; // 验证码图片实例
     private $color = null; // 验证码字体颜色
-
-    /**
-     * @var Config|null
-     */
-    private $config = null;
 
     // 验证码字符集合
     protected $codeSet = '2345678abcdefhijkmnpqrstuvwxyzABCDEFGHJKLMNPQRTUVWXY';
@@ -44,27 +38,11 @@ class Captcha
     protected $math = false;
 
     /**
-     * 架构方法 设置参数
-     * @access public
-     * @param Config $config
-     */
-    public function __construct(Config $config)
-    {
-        $this->config = $config;
-    }
-
-    /**
      * 配置验证码
-     * @param string|null $config
+     * @param array $config
      */
-    protected function configure(string $config = null): void
+    protected function configure(array $config = []): void
     {
-        if (is_null($config)) {
-            $config = $this->config->get('captcha', []);
-        } else {
-            $config = $this->config->get('captcha.' . $config, []);
-        }
-
         foreach ($config as $key => $val) {
             if (property_exists($this, $key)) {
                 $this->{$key} = $val;
@@ -128,11 +106,12 @@ class Captcha
     /**
      * 输出验证码并把验证码的值保存的session中
      * @access public
-     * @param null|string $config
+     * @param array $config
      * @param bool $api
      * @return array
+     * @throws Exception
      */
-    public function create(string $config = null, bool $api = false): array
+    public function create(array $config = [], bool $api = false): array
     {
         $this->configure($config);
 
