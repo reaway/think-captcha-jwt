@@ -6,7 +6,10 @@ composer require reaway/think-captcha-jwt
 ```
 
 ## 用法
-
+安装依赖
+```bash
+composer require firebase/php-jwt
+```
 ThinkPHP控制器中使用
 
 ```php
